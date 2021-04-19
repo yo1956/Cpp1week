@@ -72,6 +72,7 @@ int main(){
 		}
 	}
 
+	cout << endl;
 	
 	//最初のパスを0～num_node-1まで順番にたどるとする場合
 	cout << "【最初のパスを0～num_node-1まで順番にたどるとする場合】" << endl;
@@ -83,6 +84,7 @@ int main(){
 
 	//局所的な最適解を入れる
 	vector<int> new_path;
+	//vector<int> new_path_oropt;
 
 	//出力部
 	cout << "最初のパス：";
@@ -90,7 +92,7 @@ int main(){
 		cout << path[i] << " ";
 
 	cout << endl;
-	cout << "最初のパスのコスト：" << Cost(path, dist) << endl;
+	cout << "最初のパスのコスト：" << Cost(path, dist) << endl << endl;
 
 	cout << "2-opt法を適用" << endl;
 	new_path = TwoOpt(path, dist);
@@ -102,9 +104,22 @@ int main(){
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
 
+	//new_path.clear();
+
+	cout << "さらにor-opt法を適用" << endl;
+	new_path = OrOpt(new_path, dist);
+
+	cout << "局所的な最適解のパス：";
+	for(int i=0; i < new_path.size(); i++)
+		cout << new_path[i] << " ";
+	cout << endl;
+
+	cout << "そのコスト：" << Cost(new_path, dist) << endl;
+	cout << endl << endl;
+
 	new_path.clear();
 
-	cout << "or-opt法を適用" << endl;
+	cout << "最初のパスに対してor-opt法を単体で適用した場合" << endl;
 	new_path = OrOpt(path, dist);
 
 	cout << "局所的な最適解のパス：";
@@ -113,7 +128,8 @@ int main(){
 	cout << endl;
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
-	cout << endl;
+	cout << endl << endl;
+	
 
 	//最初のパスをGreedy法で決める場合
 	cout << "【最初のパスをGreedy法で決める場合】" << endl;
@@ -132,7 +148,7 @@ int main(){
 		cout << path[i] << " ";
 
 	cout << endl;
-	cout << "最初のパスのコスト：" << Cost(path, dist) << endl;
+	cout << "最初のパスのコスト：" << Cost(path, dist) << endl << endl;
 
 	cout << "2-opt法を適用" << endl;
 	new_path = TwoOpt(path, dist);
@@ -144,9 +160,22 @@ int main(){
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
 
+	//new_path.clear();
+
+	cout << "さらにor-opt法を適用" << endl;
+	new_path = OrOpt(new_path, dist);
+
+	cout << "局所的な最適解のパス：";
+	for(int i=0; i < new_path.size(); i++)
+		cout << new_path[i] << " ";
+	cout << endl;
+
+	cout << "そのコスト：" << Cost(new_path, dist) << endl;
+	cout << endl << endl;
+
 	new_path.clear();
 
-	cout << "or-opt法を適用" << endl;
+	cout << "最初のパスに対してor-opt法を単体で適用した場合" << endl;
 	new_path = OrOpt(path, dist);
 
 	cout << "局所的な最適解のパス：";
@@ -155,7 +184,7 @@ int main(){
 	cout << endl;
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
-	cout << endl;
+	cout << endl << endl;
 
 }
 
@@ -263,15 +292,18 @@ vector<int> InsertOrOpt(vector<int> const& path, const int& i, const int& j)
 	for(int k=i; k < j; k++){
 		new_path[k] = path[k+1];
 	}
-	new_path.push_back(path[i]);
+
+	new_path[j] = path[i];
+
 	for(int k=j+1; k < path.size(); k++){
 		new_path[k] = path[k];
 	}
 
-	for(int k=0; k < new_path.size(); k++)
+	//デバッグ用
+	/*for(int k=0; k < new_path.size(); k++)
 		cout << new_path[k] << " ";
 	
-	cout << endl;
+	cout << endl;*/
 
 	return new_path;
 }
