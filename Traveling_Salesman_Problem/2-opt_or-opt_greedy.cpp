@@ -34,6 +34,9 @@ int main(){
 
 	bool flag_display = true;
 	string s;
+	double cost_org = 0;
+	double cost_imp = 0;
+
 	cout << "生成したノードの座標と各ノード間の距離を表示するならそのままEnterキー、したくないならnを入力：";
 	
 	cin.ignore();
@@ -92,9 +95,11 @@ int main(){
 		cout << path[i] << " ";
 
 	cout << endl;
-	cout << "最初のパスのコスト：" << Cost(path, dist) << endl << endl;
+	
+	cost_org = Cost(path, dist);
+	cout << "最初のパスのコスト：" << cost_org << endl << endl;
 
-	cout << "2-opt法を適用" << endl;
+	cout << "最初のパスに対して2-opt法を適用" << endl;
 	new_path = TwoOpt(path, dist);
 
 	cout << "局所的な最適解のパス：";
@@ -102,7 +107,10 @@ int main(){
 		cout << new_path[i] << " ";
 	cout << endl;
 
-	cout << "そのコスト：" << Cost(new_path, dist) << endl;
+	cost_imp = Cost(new_path, dist);
+	cout << "そのコスト：" << cost_imp << endl;
+
+	//cout << "改善率 = " << 
 
 	//new_path.clear();
 
@@ -115,12 +123,23 @@ int main(){
 	cout << endl;
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
-	cout << endl << endl;
+	cout << endl;
 
 	new_path.clear();
 
-	cout << "最初のパスに対してor-opt法を単体で適用した場合" << endl;
+	cout << "最初のパスに対してor-opt法を適用" << endl;
 	new_path = OrOpt(path, dist);
+
+	cout << "局所的な最適解のパス：";
+	for(int i=0; i < new_path.size(); i++)
+		cout << new_path[i] << " ";
+	cout << endl;
+
+	cout << "そのコスト：" << Cost(new_path, dist) << endl;
+	//cout << endl;
+
+	cout << "さらに2-opt法を適用" << endl;
+	new_path = TwoOpt(new_path, dist);
 
 	cout << "局所的な最適解のパス：";
 	for(int i=0; i < new_path.size(); i++)
@@ -150,7 +169,7 @@ int main(){
 	cout << endl;
 	cout << "最初のパスのコスト：" << Cost(path, dist) << endl << endl;
 
-	cout << "2-opt法を適用" << endl;
+	cout << "最初のパスに対して2-opt法を適用" << endl;
 	new_path = TwoOpt(path, dist);
 
 	cout << "局所的な最適解のパス：";
@@ -171,11 +190,11 @@ int main(){
 	cout << endl;
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
-	cout << endl << endl;
+	cout << endl;
 
 	new_path.clear();
 
-	cout << "最初のパスに対してor-opt法を単体で適用した場合" << endl;
+	cout << "最初のパスに対してor-opt法を適用" << endl;
 	new_path = OrOpt(path, dist);
 
 	cout << "局所的な最適解のパス：";
@@ -184,8 +203,18 @@ int main(){
 	cout << endl;
 
 	cout << "そのコスト：" << Cost(new_path, dist) << endl;
-	cout << endl << endl;
+	//cout << endl;
 
+	cout << "さらに2-opt法を適用" << endl;
+	new_path = TwoOpt(new_path, dist);
+
+	cout << "局所的な最適解のパス：";
+	for(int i=0; i < new_path.size(); i++)
+		cout << new_path[i] << " ";
+	cout << endl;
+
+	cout << "そのコスト：" << Cost(new_path, dist) << endl;
+	cout << endl;
 }
 
 
@@ -310,7 +339,6 @@ vector<int> InsertOrOpt(vector<int> const& path, const int& i, const int& j)
 
 
 //or-opt法(都市を1つ挿入)
-//要見直し
 vector<int> OrOpt(vector<int> path, vector<vector<double>> const& dist)
 {
 	vector<int> new_path;
